@@ -1,0 +1,1 @@
+export class Map { constructor(enemies, dealer) { this.enemies = enemies; this.dealer = dealer; } current(index) { return index >= this.enemies.length ? this.dealer : this.enemies[index]; } isDealer(index) { return index >= this.enemies.length; } }

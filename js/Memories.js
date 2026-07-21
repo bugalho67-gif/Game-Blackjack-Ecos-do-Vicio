@@ -1,0 +1,1 @@
+export class Memories { constructor(entries) { this.entries = entries; } unlock(state, id, route) { const entry = state.bookUnlocks[id] || {}; entry[route] = true; if (route === 'g' || route === 'b') entry.both = true; state.bookUnlocks[id] = entry; } }
