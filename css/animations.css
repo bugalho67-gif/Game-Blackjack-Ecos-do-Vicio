@@ -1,0 +1,25 @@
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/css/animations.css b/css/animations.css
+new file mode 100644
+index 0000000000000000000000000000000000000000..d01c494b1df8d7029e599d71376bbea3f6148e16
+--- /dev/null
++++ b/css/animations.css
+@@ -0,0 +1,15 @@
++/* CARTAS */
++.card-enter { animation: slideIn 0.28s ease-out; }
++.card-flip { animation: flipCard 0.38s ease-in-out; }
++.card-bust { animation: shakeBust 0.5s ease; }
++.card-bj { animation: glowBJ 0.9s ease; }
++.screen-entering { animation: fadeIn 0.4s ease; }
++.screen-leaving { animation: fadeOut 0.25s ease; pointer-events: none; }
++.save-flash { animation: savePulse 0.55s ease 2; }
++@keyframes slideIn { from { transform: translateY(-36px) rotate(-3deg); opacity: 0; } to { transform: translateY(0) rotate(0); opacity: 1; } }
++@keyframes flipCard { 0% { transform: rotateY(0); } 49% { transform: rotateY(90deg); } 50% { transform: rotateY(90deg); background: #12101e; } 100% { transform: rotateY(0); } }
++@keyframes shakeBust { 0%,100% { transform: translateX(0) rotate(0); } 20% { transform: translateX(-7px) rotate(-1deg); } 40% { transform: translateX(7px) rotate(1deg); } 60% { transform: translateX(-5px); } 80% { transform: translateX(4px); } }
++@keyframes glowBJ { 0%,100% { box-shadow: none; } 50% { box-shadow: 0 0 24px #C9A84C88, 0 0 8px #C9A84C44; } }
++@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
++@keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
++@keyframes savePulse { 0%,100% { opacity: .45; transform: scale(1); } 50% { opacity: 1; transform: scale(1.25); color: #C9A84C; } }
+ 
+EOF
+)
