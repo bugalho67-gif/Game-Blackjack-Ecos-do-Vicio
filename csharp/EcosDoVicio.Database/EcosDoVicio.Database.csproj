@@ -1,0 +1,18 @@
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/csharp/EcosDoVicio.Database/EcosDoVicio.Database.csproj b/csharp/EcosDoVicio.Database/EcosDoVicio.Database.csproj
+new file mode 100644
+index 0000000000000000000000000000000000000000..07e64fd1b85b00c222003ed4351a9a79b658e774
+--- /dev/null
++++ b/csharp/EcosDoVicio.Database/EcosDoVicio.Database.csproj
+@@ -0,0 +1,8 @@
++<Project Sdk="Microsoft.NET.Sdk">
++  <PropertyGroup>
++    <TargetFramework>net8.0</TargetFramework>
++    <ImplicitUsings>enable</ImplicitUsings>
++    <Nullable>enable</Nullable>
++    <RootNamespace>EcosDoVicio.Database</RootNamespace>
++  </PropertyGroup>
++</Project>
+ 
+EOF
+)
