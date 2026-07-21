@@ -1,0 +1,386 @@
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/index.html b/index.html
+new file mode 100644
+index 0000000000000000000000000000000000000000..aefb6232dfae4fcbe6bfb2e41670ddf67fbe511b
+--- /dev/null
++++ b/index.html
+@@ -0,0 +1,376 @@
++<!DOCTYPE html>
++<html lang="pt-BR">
++<head>
++<meta charset="UTF-8">
++<meta name="viewport" content="width=device-width, initial-scale=1.0">
++<title>Blackjack: Ecos do Vício</title>
++<link rel="preconnect" href="https://fonts.googleapis.com">
++<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
++<style>
++  * { box-sizing: border-box; margin: 0; padding: 0; }
++
++  body {
++    background: #080808;
++    color: #ccc0a8;
++    font-family: 'Crimson Text', serif;
++    font-size: 16px;
++    line-height: 1.6;
++    min-height: 100vh;
++  }
++
++  .G {
++    width: 100%;
++    max-width: 720px;
++    margin: 0 auto;
++    min-height: 100vh;
++    overflow: hidden;
++    position: relative;
++  }
++
++  .sc { display: none; width: 100%; flex-direction: column; }
++  .sc.on { display: flex; }
++
++  /* ========== TITLE ========== */
++  .t-wrap {
++    min-height: 100vh;
++    background: #07070a;
++    align-items: center;
++    justify-content: center;
++    padding: 40px 20px;
++    text-align: center;
++  }
++  .t-orn { font-size: 22px; letter-spacing: 10px; margin-bottom: 10px; opacity: .5; }
++  .t-logo { font-family: 'Cinzel', serif; font-size: 40px; font-weight: 700; letter-spacing: 3px; line-height: 1.1; }
++  .t-sub { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 8px; text-transform: uppercase; margin-top: 5px; margin-bottom: 6px; }
++  .t-line { height: 1px; margin: 14px auto; width: 200px; }
++  .t-quote { font-style: italic; font-size: 14px; max-width: 360px; margin: 0 auto 32px; line-height: 1.9; }
++  .btn {
++    font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
++    background: transparent; border: 1px solid; padding: 11px 28px; cursor: pointer;
++    transition: all .25s; margin: 5px; border-radius: 2px;
++  }
++
++  /* ========== MAP ========== */
++  .m-wrap {
++    min-height: 100vh;
++    background: #07060d;
++    align-items: center;
++    justify-content: center;
++    padding: 28px 20px;
++    gap: 18px;
++  }
++  .m-title { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 5px; text-transform: uppercase; text-align: center; }
++  .m-track { display: flex; align-items: center; gap: 0; justify-content: center; flex-wrap: wrap; max-width: 560px; }
++  .m-nd {
++    width: 72px; height: 72px; border: 1px solid;
++    display: flex; flex-direction: column; align-items: center; justify-content: center;
++    cursor: default; transition: border-color .3s;
++  }
++  .m-nd.done { background: #0e0c18; border-color: #2e2040; }
++  .m-nd.cur { background: #12101e; animation: mp 2s infinite; }
++  .m-nd.lock { background: transparent; opacity: .2; border-color: #1a1824; }
++  .m-icon { font-size: 22px; opacity: .8; }
++  .m-lbl { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
++  .m-ln { width: 24px; height: 1px; }
++  @keyframes mp { 0%,100% { border-color: #6a4aaa; } 50% { border-color: #c0a0e8; } }
++  .m-card { background: #0e0c18; border: 1px solid #1e1830; padding: 16px 20px; max-width: 360px; width: 100%; }
++  .m-cname { font-family: 'Cinzel', serif; font-size: 17px; margin-bottom: 3px; }
++  .m-csub { font-size: 13px; font-style: italic; margin-bottom: 10px; }
++  .m-cbio { font-size: 13px; line-height: 1.8; }
++  .m-route-sum { display: flex; gap: 16px; padding: 8px 0; border-top: 1px solid; margin-top: 10px; font-size: 11px; text-align: center; }
++  .m-rs { flex: 1; }
++  .m-rs-n { font-family: 'Cinzel', serif; font-size: 16px; font-weight: 700; }
++
++  /* ========== SHOP ========== */
++  .sh-wrap {
++    min-height: 100vh; background: #0a0906;
++    align-items: flex-start; justify-content: center;
++    padding: 24px 20px; gap: 14px;
++  }
++  .sh-top { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 600px; }
++  .sh-title { font-family: 'Cinzel', serif; font-size: 14px; letter-spacing: 3px; text-transform: uppercase; }
++  .sh-gold { font-family: 'Cinzel', serif; font-size: 14px; }
++  .sh-vendor { background: #0e0c08; border: 1px solid #2a2418; padding: 14px 16px; max-width: 600px; width: 100%; font-size: 14px; font-style: italic; line-height: 1.8; }
++  .sh-vname { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
++  .sh-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; max-width: 600px; width: 100%; }
++  .sh-item { background: #0c0a07; border: 1px solid #2a2418; padding: 12px; cursor: pointer; transition: border-color .2s; }
++  .sh-item:hover { border-color: #c9a84c; }
++  .sh-item.owned { border-color: #3a5a2a; cursor: default; }
++  .sh-item.owned:hover { border-color: #3a5a2a; }
++  .sh-iname { font-family: 'Cinzel', serif; font-size: 12px; margin-bottom: 3px; }
++  .sh-idesc { font-size: 11px; font-style: italic; line-height: 1.5; }
++  .sh-iprice { font-size: 11px; margin-top: 6px; letter-spacing: 1px; }
++  .sh-irare { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
++
++  /* ========== GAME ========== */
++  .g-wrap { min-height: 100vh; background: #060609; }
++  .hud { display: flex; align-items: center; gap: 10px; padding: 10px 18px; border-bottom: 1px solid #1a1828; }
++  .hud-port { width: 46px; height: 46px; border: 1px solid; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
++  .hud-name { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 600; }
++  .hud-sub { font-size: 11px; font-style: italic; }
++  .hud-mid { text-align: center; flex: 1; }
++  .hud-hn { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
++  .hud-hv { font-family: 'Cinzel', serif; font-size: 20px; font-weight: 700; }
++  .hud-right { text-align: right; }
++  .hud-bl { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 3px; }
++  .pbar { width: 110px; height: 5px; border: 1px solid; margin-left: auto; }
++  .pfill { height: 100%; transition: width .5s; }
++  .table { flex: 1; padding: 14px 18px; display: flex; flex-direction: column; gap: 12px; }
++  .tl-lbl { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 6px; }
++  .c-row { display: flex; gap: 7px; flex-wrap: wrap; min-height: 80px; align-items: flex-start; }
++  .card {
++    width: 50px; height: 72px; background: #f0eae0; border: 1px solid #c8b89a;
++    border-radius: 3px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #1a1208;
++  }
++  .card.r { color: #7a1a1a; }
++  .card .sv { font-size: 11px; font-weight: 700; line-height: 1; }
++  .card .ss { font-size: 20px; line-height: 1; }
++  .card.hid {
++    background: #12101e; border-color: #2a1840;
++    background-image: repeating-linear-gradient(45deg, #100e1c, #100e1c 4px, #1a1630 4px, #1a1630 8px);
++  }
++  .sc-num { font-family: 'Cinzel', serif; font-size: 20px; font-weight: 700; margin-left: 8px; vertical-align: middle; }
++  .sc-bust { color: #8a2020; }
++  .sc-bj { color: #2a8a5a; }
++  .spec-bar {
++    background: #0e0c14; border: 1px solid #1a1828;
++    padding: 7px 12px; display: flex; align-items: center; gap: 10px;
++  }
++  .sp-lbl { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; white-space: nowrap; }
++  .sp-track { flex: 1; height: 4px; background: #100d18; }
++  .sp-fill { height: 100%; transition: width .6s; }
++  .sp-val { font-size: 10px; min-width: 32px; text-align: right; font-family: 'Cinzel', serif; }
++  .ctrl { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; padding: 10px 18px; border-top: 1px solid #16141e; }
++  .bg {
++    font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
++    background: transparent; border: 1px solid #28243a; color: #7a6a9a;
++    padding: 8px 16px; cursor: pointer; transition: all .2s; border-radius: 2px;
++  }
++  .bg:hover { border-color: #c9a84c; color: #c9a84c; }
++  .bg:disabled { opacity: .2; cursor: not-allowed; }
++  .bg:disabled:hover { border-color: #28243a; color: #7a6a9a; }
++  .rm { font-family: 'Cinzel', serif; font-size: 13px; margin-left: auto; font-weight: 600; }
++  .rw { color: #2a8a5a; }
++  .rl { color: #8a2020; }
++  .rd { color: #6a5a3a; }
++  .dlg { padding: 12px 18px; min-height: 88px; border-top: 1px solid #14121e; }
++  .dlg-sp { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; }
++  .dlg-tx { font-style: italic; font-size: 14px; line-height: 1.8; min-height: 46px; }
++  .ch { padding: 10px 18px; border-top: 1px solid #0e0c14; }
++  .ch-lbl { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px; }
++  .ch-btn {
++    background: transparent; border: 1px solid #1c1828; color: #a898b8;
++    padding: 7px 12px; text-align: left; cursor: pointer;
++    font-family: 'Crimson Text', serif; font-size: 13px; line-height: 1.4;
++    transition: all .2s; border-radius: 2px; width: 100%; margin-bottom: 4px;
++  }
++  .ch-btn:hover { border-color: #c9a84c; color: #e0d0a8; background: #100e14; }
++  .ch-btn.g:hover { border-color: #3a8a4a; color: #6ab87a; }
++  .ch-btn.b:hover { border-color: #8a2020; color: #c05050; }
++  .ch-btn.s:hover { border-color: #6a2a9a; color: #9a6ab8; }
++  .item-notif {
++    background: #0c0a12; border: 1px solid #2a1840;
++    padding: 8px 14px; font-size: 12px; font-style: italic;
++    margin: 0 0 6px; text-align: center;
++  }
++
++
++  .card { animation: cardSlide .28s ease both; }
++  .sc.on { animation: screenFade .25s ease both; }
++  .m-nd.cur, .hud-port { animation: neonPulse 2s infinite; }
++  body.shake .G { animation: tableShake .22s ease; }
++  @keyframes cardSlide { from { opacity: 0; transform: translateY(-18px) rotate(-3deg); } to { opacity: 1; transform: translateY(0) rotate(0); } }
++  @keyframes screenFade { from { opacity: 0; } to { opacity: 1; } }
++  @keyframes neonPulse { 0%,100% { filter: drop-shadow(0 0 0 transparent); } 50% { filter: drop-shadow(0 0 8px currentColor); } }
++  @keyframes tableShake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
++
++  /* ========== BOOK ========== */
++  .bk-wrap { min-height: 100vh; background: #070608; padding: 24px 20px; gap: 14px; align-items: flex-start; }
++  .bk-top { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 600px; }
++  .bk-title { font-family: 'Cinzel', serif; font-size: 14px; letter-spacing: 3px; text-transform: uppercase; }
++  .bk-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; max-width: 600px; width: 100%; }
++  .bk-card { background: #0c0a10; border: 1px solid #1e1828; padding: 12px; cursor: pointer; transition: border-color .2s; }
++  .bk-card:hover { border-color: #7a5a9a; }
++  .bk-card.locked { opacity: .3; cursor: not-allowed; }
++  .bk-card.locked:hover { border-color: #1e1828; }
++  .bk-cicon { font-size: 20px; margin-bottom: 6px; }
++  .bk-cname { font-family: 'Cinzel', serif; font-size: 12px; margin-bottom: 3px; }
++  .bk-csub { font-size: 11px; font-style: italic; }
++  .bk-entry { background: #0c0a10; border: 1px solid #1e1828; padding: 16px; max-width: 600px; width: 100%; font-size: 13px; line-height: 1.9; }
++  .bk-ename { font-family: 'Cinzel', serif; font-size: 16px; margin-bottom: 6px; }
++  .bk-esub { font-size: 12px; font-style: italic; margin-bottom: 12px; }
++  .bk-sec { margin-bottom: 12px; }
++  .bk-sec-lbl { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
++  .bk-sec-txt { font-size: 13px; line-height: 1.9; }
++
++  /* ========== END ========== */
++  .e-wrap {
++    min-height: 100vh; background: #070608;
++    align-items: center; justify-content: center;
++    padding: 36px 20px; text-align: center; gap: 12px;
++  }
++  .e-orn { font-size: 24px; letter-spacing: 12px; opacity: .6; margin-bottom: 4px; }
++  .e-title { font-family: 'Cinzel', serif; font-size: 22px; font-weight: 600; }
++  .e-badge { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; padding: 4px 14px; border: 1px solid; }
++  .e-txt { max-width: 400px; font-style: italic; font-size: 14px; line-height: 2; color: #7a6a8a; }
++  .e-stats { display: flex; gap: 28px; justify-content: center; }
++  .e-sn { font-family: 'Cinzel', serif; font-size: 26px; font-weight: 700; display: block; }
++  .e-sl { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
++  .e-item { background: #0e0c10; border: 1px solid #2a1840; padding: 12px 20px; max-width: 300px; }
++  .e-in { font-family: 'Cinzel', serif; font-size: 12px; margin-bottom: 3px; }
++  .e-id { font-size: 11px; font-style: italic; }
++  .e-map { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 4px; }
++  .e-mn { text-align: center; font-size: 10px; }
++  .e-mico { font-size: 18px; }
++</style>
++</head>
++<body>
++<div class="G" id="G">
++
++  <!-- ====== TITLE ====== -->
++  <div class="sc on t-wrap" id="sT" style="align-items:center;justify-content:center">
++    <div class="t-orn" style="color:#c9a84c">♠ ♦ ♣ ♥</div>
++    <div class="t-logo" style="color:#c9a84c">BLACKJACK</div>
++    <div class="t-sub" style="color:#5a4a2a">Ecos do Vício</div>
++    <div class="t-line" style="background:linear-gradient(90deg,transparent,#c9a84c,transparent)"></div>
++    <p class="t-quote" style="color:#6a5a3a">
++      "Cada mão jogada deixa uma marca.<br>
++       Cada escolha define quem você é.<br>
++       O cassino nunca fecha."
++    </p>
++    <div>
++      <button class="btn" style="color:#c9a84c;border-color:#c9a84c" onclick="newGame()">Novo jogo</button>
++      <button class="btn" style="color:#5a4a6a;border-color:#2a2238" onclick="openBook()">Livro de memórias</button>
++      <button class="btn" style="color:#6a8a5a;border-color:#263820" onclick="game.loadGame()">Continuar</button>
++    </div>
++    <div id="tSavedInfo" style="font-size:11px;color:#3a2a2a;margin-top:16px;letter-spacing:1px"></div>
++  </div>
++
++  <!-- ====== MAP ====== -->
++  <div class="sc m-wrap" id="sM">
++    <div class="m-title" id="mTitle" style="color:#5a4a6a">Mapa — cinza enquanto a jornada continua</div>
++    <div class="m-track" id="mTrack"></div>
++    <div class="m-card" id="mCard">
++      <div class="m-cname" id="mcName" style="color:#c9a84c"></div>
++      <div class="m-csub" id="mcSub" style="color:#6a5a4a"></div>
++      <div class="m-cbio" id="mcBio" style="color:#8a7a6a"></div>
++      <div class="m-route-sum" id="mcRoutes" style="border-color:#2a2218;color:#4a3a2a"></div>
++    </div>
++    <div id="mItemEarned" style="display:none" class="item-notif"></div>
++    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
++      <button class="btn" id="btnShop" style="color:#c9a84c;border-color:#4a3a18" onclick="goShop()">Vendedor</button>
++      <button class="btn" id="btnFight" style="color:#c9a84c;border-color:#c9a84c" onclick="startBattle()">Sentar à mesa</button>
++      <button class="btn" style="color:#3a2a4a;border-color:#1e1828" onclick="openBook()">Livro de memórias</button>
++    </div>
++  </div>
++
++  <!-- ====== SHOP ====== -->
++  <div class="sc sh-wrap" id="sSh">
++    <div class="sh-top">
++      <div class="sh-title" style="color:#c9a84c">O Vendedor</div>
++      <div class="sh-gold" style="color:#c9a84c">Fichas: <span id="shGold">3</span></div>
++    </div>
++    <div class="sh-vendor">
++      <div class="sh-vname" style="color:#8a7a5a">O Vendedor</div>
++      <div id="shVendorTxt" style="color:#7a6a4a"></div>
++    </div>
++    <div class="sh-grid" id="shGrid"></div>
++    <button class="btn" style="color:#5a4a3a;border-color:#2a2218" onclick="goMap()">Voltar ao mapa</button>
++  </div>
++
++  <!-- ====== GAME ====== -->
++  <div class="sc g-wrap" id="sG">
++    <div class="hud" id="hud">
++      <div class="hud-port" id="hudPort" style="border-color:#2a2238;color:#c0b0d8;background:#0c0a18">?</div>
++      <div style="flex:1">
++        <div class="hud-name" id="hudName" style="color:#c0b0d8"></div>
++        <div class="hud-sub" id="hudSub" style="color:#4a3a6a"></div>
++      </div>
++      <div class="hud-mid">
++        <div class="hud-hn" style="color:#3a2a5a">Mão</div>
++        <div class="hud-hv" id="hudHand" style="color:#c0b0d8">1/6</div>
++      </div>
++      <div class="hud-right">
++        <div class="hud-bl" id="hudBarLbl" style="color:#3a2a5a">Estado</div>
++        <div class="pbar" id="hudPBar" style="border-color:#1a1828;background:#0c0a18">
++          <div class="pfill" id="hudPFill" style="width:70%"></div>
++        </div>
++      </div>
++    </div>
++    <div class="table" id="tbl">
++      <div>
++        <div class="tl-lbl" id="tblELbl" style="color:#2a4a3a"></div>
++        <div class="c-row" id="eCards"></div>
++      </div>
++      <div class="spec-bar" id="specBar" style="display:none">
++        <div class="sp-lbl" id="spLbl" style="color:#4a3a6a"></div>
++        <div class="sp-track"><div class="sp-fill" id="spFill" style="width:50%"></div></div>
++        <div class="sp-val" id="spVal" style="color:#6a5a8a">50%</div>
++      </div>
++      <div>
++        <div style="display:flex;align-items:center;gap:8px">
++          <div class="tl-lbl" style="color:#2a4a3a">Você</div>
++          <span class="sc-num" id="pScore" style="color:#c0b0d8">0</span>
++        </div>
++        <div class="c-row" id="pCards"></div>
++      </div>
++    </div>
++    <div class="ctrl">
++      <button class="bg" id="bH" onclick="hit()">Pedir carta</button>
++      <button class="bg" id="bS" onclick="stand()">Parar</button>
++      <button class="bg" id="bD" onclick="deal()" style="display:none">Nova mão</button>
++      <button class="bg" id="bItem" onclick="useItem()" style="display:none">Usar item</button>
++      <span class="rm" id="rMsg"></span>
++    </div>
++    <div class="dlg" id="dlgArea" style="display:none">
++      <div class="dlg-sp" id="dlgSp" style="color:#c0b0d8"></div>
++      <div class="dlg-tx" id="dlgTx" style="color:#a898b8"></div>
++    </div>
++    <div class="ch" id="chArea" style="display:none">
++      <div class="ch-lbl" style="color:#3a2a5a">Como você responde?</div>
++      <div id="chGrid"></div>
++    </div>
++  </div>
++
++  <!-- ====== BOOK ====== -->
++  <div class="sc bk-wrap" id="sBk">
++    <div class="bk-top" style="max-width:600px;width:100%">
++      <div class="bk-title" style="color:#9a8ab8">Livro de memórias</div>
++      <button class="btn" style="color:#4a3a5a;border-color:#1e1828;font-size:10px;padding:6px 14px" onclick="closeBook()">Fechar</button>
++    </div>
++    <div class="bk-grid" id="bkGrid"></div>
++    <div class="bk-entry" id="bkEntry" style="display:none">
++      <button class="btn" style="color:#4a3a5a;border-color:#1e1828;font-size:10px;padding:5px 12px;margin-bottom:12px" onclick="closeBkEntry()">← Voltar</button>
++      <div class="bk-ename" id="bkEName" style="color:#c0a8d8"></div>
++      <div class="bk-esub" id="bkESub" style="color:#5a4a6a"></div>
++      <div id="bkEContent"></div>
++    </div>
++  </div>
++
++  <!-- ====== END ====== -->
++  <div class="sc e-wrap" id="sE">
++    <div class="e-orn" id="eOrn" style="color:#c9a84c"></div>
++    <div class="e-title" id="eTitle" style="color:#c9a84c"></div>
++    <div class="e-badge" id="eBadge"></div>
++    <p class="e-txt" id="eTxt"></p>
++    <div class="e-stats">
++      <div><span class="e-sn" id="eSW" style="color:#c9a84c">0</span><span class="e-sl" style="color:#4a3a2a">Salvos</span></div>
++      <div><span class="e-sn" id="eSC" style="color:#c9a84c">0</span><span class="e-sl" style="color:#4a3a2a">Corrompidos</span></div>
++      <div><span class="e-sn" id="eSS" style="color:#c9a84c">0</span><span class="e-sl" style="color:#4a3a2a">Secreto</span></div>
++    </div>
++    <div class="e-map" id="eMap"></div>
++    <div class="e-item">
++      <div class="e-in" id="eItemN" style="color:#c9a84c"></div>
++      <div class="e-id" id="eItemD" style="color:#5a4a3a"></div>
++    </div>
++    <div>
++      <button class="btn" style="color:#c9a84c;border-color:#c9a84c" onclick="showTit()">Menu principal</button>
++      <button class="btn" style="color:#4a3a5a;border-color:#1e1828" onclick="newGame()">Jogar novamente</button>
++    </div>
++  </div>
++
++</div><!-- /.G -->
++
++<script type="module" src="src/main.js"></script>
++</body>
++</html>
+ 
+EOF
+)
