@@ -1,0 +1,75 @@
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/data/items.json b/data/items.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..b3ef8f0507e42c352bc9ca609150153ef2f76394
+--- /dev/null
++++ b/data/items.json
+@@ -0,0 +1,64 @@
++{
++  "shopItems": [
++    {
++      "id": "shield",
++      "name": "Escudo de feltro",
++      "desc": "Anula um estouro por rodada. Uso único por batalha.",
++      "price": 2,
++      "effect": "shield",
++      "rare": "Raro",
++      "col": "#4a6a8a"
++    },
++    {
++      "id": "peek",
++      "name": "Segundo olhar",
++      "desc": "Revela a carta escondida do inimigo por uma rodada.",
++      "price": 1,
++      "effect": "peek",
++      "rare": "Comum",
++      "col": "#4a5a4a"
++    },
++    {
++      "id": "echo",
++      "name": "Eco da memória",
++      "desc": "Reutiliza o valor da sua melhor carta desta batalha.",
++      "price": 3,
++      "effect": "echo",
++      "rare": "Épico",
++      "col": "#6a4a8a"
++    },
++    {
++      "id": "mirror",
++      "name": "Espelho quebrado",
++      "desc": "Copia o placar do inimigo por uma mão.",
++      "price": 2,
++      "effect": "mirror",
++      "rare": "Raro",
++      "col": "#5a4a6a"
++    },
++    {
++      "id": "anchor",
++      "name": "Âncora de 17",
++      "desc": "Impede que o inimigo ultrapasse 17 em uma rodada.",
++      "price": 3,
++      "effect": "anchor",
++      "rare": "Épico",
++      "col": "#4a5a6a"
++    },
++    {
++      "id": "legend",
++      "name": "Última ficha dourada",
++      "desc": "Ganha automaticamente a próxima mão perdida.",
++      "price": 5,
++      "effect": "legend",
++      "rare": "Lendário",
++      "col": "#8a6a10"
++    }
++  ],
++  "vendorTexts": {
++    "neutral": "Você chegou até aqui. Isso já é mais do que a maioria. Tenho algumas coisas que podem ajudar — ou complicar, depende de como você as usa.",
++    "good": "Você está no caminho certo. Não vendo para quem não vai usar com critério. Escolha com cuidado.",
++    "bad": "Interessante. Você os destruiu. Não costuro moral, mas não esqueço. O que você quer agora?",
++    "secret": "[pausa] Você está se parecendo com alguém que conheço. Não sei se isso é bom. Veja o que tenho."
++  }
++}
+\ No newline at end of file
+ 
+EOF
+)
